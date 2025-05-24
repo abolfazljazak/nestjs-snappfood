@@ -1,3 +1,4 @@
 export enum EntityNames {
-  User = "User",
+  User = "user",
+  UserAddress = "user_address"
 }

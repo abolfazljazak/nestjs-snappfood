@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserAddressEntity } from './address.entity';
 
 @Entity(EntityNames.User)
 export class UserEntity {
@@ -32,6 +34,9 @@ export class UserEntity {
 
   @Column({ nullable: true })
   agentId: number;
+
+  @OneToMany(() => UserAddressEntity, (address) => address.user)
+  addressList: UserAddressEntity[];
 
   @CreateDateColumn({ type: 'time with time zone' })
   created_at: Date;
