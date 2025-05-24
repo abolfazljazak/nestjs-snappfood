@@ -1,19 +1,16 @@
 import { EntityNames } from 'src/common/enum/entity.enum';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserAddressEntity } from './address.entity';
 
 @Entity(EntityNames.User)
-export class UserEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   first_name: string;
 
