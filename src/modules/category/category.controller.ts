@@ -7,16 +7,13 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  UploadedFile,
-  ParseFilePipe,
-  MaxFileSizeValidator,
-  FileTypeValidator,
 } from "@nestjs/common";
 import { CategoryService } from "./category.service";
-import { CreateCategoryDto, UpdateCategoryDto } from "./dto/create-category.dto";
+import { CreateCategoryDto, UpdateCategoryDto } from "./dto/category.dto";
 import { ApiConsumes } from "@nestjs/swagger";
 import { SwaggerConsumes } from "src/common/enum/swagger-consumes.enum";
 import { UploadFileS3 } from "src/common/interceptors/upload-file.interceptor";
+import { UploadFile } from "src/common/decorators/upload-file.decorator";
 
 @Controller("category")
 export class CategoryController {
@@ -26,17 +23,8 @@ export class CategoryController {
   @ApiConsumes(SwaggerConsumes.MultipartData)
   @UseInterceptors(UploadFileS3("image"))
   create(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 2 * 1024 * 1024 }),
-          new FileTypeValidator({ fileType: "image/(png|jpg|jpeg|webp)" }),
-        ],
-      }),
-    )
-    image: Express.Multer.File,
-    @Body()
-    createCategoryDto: CreateCategoryDto,
+    @UploadFile() image: Express.Multer.File,
+    @Body() createCategoryDto: CreateCategoryDto,
   ) {
     return this.categoryService.create(createCategoryDto);
   }
