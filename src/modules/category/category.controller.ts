@@ -26,7 +26,7 @@ export class CategoryController {
     @UploadFile() image: Express.Multer.File,
     @Body() createCategoryDto: CreateCategoryDto,
   ) {
-    return this.categoryService.create(createCategoryDto);
+    return this.categoryService.create(createCategoryDto, image);
   }
 
   @Get()
