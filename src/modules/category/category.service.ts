@@ -25,10 +25,10 @@ export class CategoryService {
       image,
       "snappfood-iamge",
     );
-    const { title, slug, parentId, show } = createCategoryDto;
+    const { title, slug, parentId } = createCategoryDto;
     const category = await this.findOneBySlug(slug);
 
-    if (!category) throw new ConflictException("Category already exists.");
+    if (category) throw new ConflictException("Category already exists.");
 
     let parent;
     if (parentId) {

@@ -12,7 +12,7 @@ export class S3Service {
         secretAccessKey: process.env.S3_SECRET_KEY,
       },
       endpoint: process.env.S3_ENDPOINT,
-      region: 'defult',
+      region: 'default',
     });
   }
 
