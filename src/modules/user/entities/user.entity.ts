@@ -1,6 +1,5 @@
 import { EntityNames } from 'src/common/enum/entity.enum';
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserAddressEntity } from './address.entity';
+import { BaseEntity } from 'src/common/abstracts/base.entity';
 
 @Entity(EntityNames.User)
 export class UserEntity extends BaseEntity {
