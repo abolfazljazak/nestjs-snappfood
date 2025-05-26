@@ -1,5 +1,6 @@
+import { BaseEntity } from 'src/common/abstracts/base.entity';
 import { EntityNames } from 'src/common/enum/entity.enum';
-import { BaseEntity, Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity(EntityNames.Category)
 export class CategoryEntity extends BaseEntity {
