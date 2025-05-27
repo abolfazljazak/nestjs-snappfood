@@ -3,7 +3,7 @@ import { UserEntity } from "./user.entity";
 import { BaseEntity } from "src/common/abstracts/base.entity";
 import { EntityNames } from "src/common/enum/entity.enum";
 
-@Entity(EntityNames.Otp)
+@Entity(EntityNames.UserOtp)
 export class OtpEntity extends BaseEntity {
   @Column()
   code: string;
