@@ -143,4 +143,17 @@ export class CategoryService {
       message: "deleted successfully.",
     };
   }
+
+  async findBySlug(slug: string) {
+    const category = await this.categoryRepository.findOne({
+      where: { slug },
+      relations: {
+        children: true,
+      },
+    });
+
+    if (!category) throw new NotFoundException("not found this category slug.");
+
+    return category;
+  }
 }

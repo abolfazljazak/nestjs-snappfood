@@ -38,6 +38,11 @@ export class CategoryController {
     return this.categoryService.findAll(pagination);
   }
 
+  @Get(":slug")
+  findBySlug(@Param("slug") slug: string) {
+    return this.categoryService.findBySlug(slug);
+  }
+
 
   @Patch(":id")
   @ApiConsumes(SwaggerConsumes.MultipartData)
