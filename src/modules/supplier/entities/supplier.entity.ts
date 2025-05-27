@@ -28,6 +28,9 @@ export class SupplierEntity extends BaseEntity {
   @Column({ nullable: true })
   categoryId: string;
 
+  @Column({ nullable: true, default: false })
+  mobile_verify: boolean;
+
   @ManyToOne(() => CategoryEntity, (category) => category.suppliers)
   category: CategoryEntity;
 
