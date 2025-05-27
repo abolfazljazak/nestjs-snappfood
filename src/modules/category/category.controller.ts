@@ -40,11 +40,14 @@ export class CategoryController {
 
 
   @Patch(":id")
+  @ApiConsumes(SwaggerConsumes.MultipartData)
+  @UseInterceptors(UploadFileS3("image"))
   update(
     @Param("id") id: string,
+    @UploadFile() image: Express.Multer.File,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    return this.categoryService.update(+id, updateCategoryDto);
+    return this.categoryService.update(id, updateCategoryDto, image);
   }
 
   @Delete(":id")

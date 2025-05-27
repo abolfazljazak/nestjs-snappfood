@@ -1,6 +1,6 @@
-import { BaseEntity } from 'src/common/abstracts/base.entity';
-import { EntityNames } from 'src/common/enum/entity.enum';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { BaseEntity } from "src/common/abstracts/base.entity";
+import { EntityNames } from "src/common/enum/entity.enum";
+import { Column, Entity, ManyToOne } from "typeorm";
 
 @Entity(EntityNames.Category)
 export class CategoryEntity extends BaseEntity {
@@ -13,6 +13,9 @@ export class CategoryEntity extends BaseEntity {
   @Column()
   image: string;
 
+  @Column({ nullable: true })
+  imageKey: string;
+
   @Column()
   show: boolean;
 
@@ -20,12 +23,12 @@ export class CategoryEntity extends BaseEntity {
   parentId: string;
 
   @ManyToOne(() => CategoryEntity, (category) => category.children, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   parent: CategoryEntity;
 
   @ManyToOne(() => CategoryEntity, (category) => category.parent, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   children: CategoryEntity[];
 }
