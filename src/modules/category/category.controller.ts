@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseInterceptors,
+  Query,
 } from "@nestjs/common";
 import { CategoryService } from "./category.service";
 import { CreateCategoryDto, UpdateCategoryDto } from "./dto/category.dto";
@@ -14,6 +15,8 @@ import { ApiConsumes } from "@nestjs/swagger";
 import { SwaggerConsumes } from "src/common/enum/swagger-consumes.enum";
 import { UploadFileS3 } from "src/common/interceptors/upload-file.interceptor";
 import { UploadFile } from "src/common/decorators/upload-file.decorator";
+import { Pagination } from "src/common/decorators/pagination.decorator";
+import { PaginationDto } from "src/common/dto/pagination.dto";
 
 @Controller("category")
 export class CategoryController {
@@ -30,8 +33,9 @@ export class CategoryController {
   }
 
   @Get()
-  findAll() {
-    return this.categoryService.findAll();
+  @Pagination()
+  findAll(@Query() pagination: PaginationDto) {
+    return this.categoryService.findAll(pagination);
   }
 
 

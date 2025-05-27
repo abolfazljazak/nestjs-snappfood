@@ -8,6 +8,11 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { CategoryEntity } from "./entities/category.entity";
 import { Repository } from "typeorm";
 import { S3Service } from "../s3/s3.service";
+import { PaginationDto } from "src/common/dto/pagination.dto";
+import {
+  paginationGenerator,
+  paginationSolver,
+} from "src/common/utils/pagination.util";
 
 @Injectable()
 export class CategoryService {
@@ -48,8 +53,9 @@ export class CategoryService {
     };
   }
 
-  async findAll() {
-    return this.categoryRepository.find({
+  async findAll(pagination: PaginationDto) {
+    const { limit, page, skip } = paginationSolver(pagination);
+    const [categories, count] = await this.categoryRepository.findAndCount({
       where: {},
       relations: {
         parent: true,
@@ -58,8 +64,18 @@ export class CategoryService {
         parent: {
           title: true,
         },
-      }
+      },
+      skip,
+      take: limit,
+      order: {
+        id: "DESC",
+      },
     });
+
+    return {
+      pagination: paginationGenerator(count, page, limit),
+      categories,
+    };
   }
 
   async findOneById(id: string) {
