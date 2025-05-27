@@ -1,20 +1,18 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { UserEntity } from "./user.entity"
+import { Column, Entity, OneToOne } from "typeorm";
+import { UserEntity } from "./user.entity";
+import { BaseEntity } from "src/common/abstracts/base.entity";
 
 @Entity("otp")
-export class OtpEntity {
-    @PrimaryGeneratedColumn("uuid")
-    id: number
+export class OtpEntity extends BaseEntity {
+  @Column()
+  code: string;
 
-    @Column()
-    code: string
+  @Column()
+  expries_in: Date;
 
-    @Column()
-    expries_in: Date
+  @Column()
+  userId: string;
 
-    @Column()
-    userId: number
-
-    @OneToOne(() => UserEntity, (user) => user.otp, {onDelete: "CASCADE"})
-    user: UserEntity
+  @OneToOne(() => UserEntity, (user) => user.otp, { onDelete: "CASCADE" })
+  user: UserEntity;
 }

@@ -23,19 +23,22 @@ export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   mobile: string;
 
+  @Column({ nullable: true, default: false })
+  mobile_verify: boolean;
+
   @Column({ nullable: true, unique: true })
   email: string;
 
   @Column({ default: 0 })
   score: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   invite_code: string;
 
   @Column({ nullable: true })
   agentId: number;
 
-  @Column()
+  @Column({ nullable: true })
   otpId: string;
 
   @OneToOne(() => OtpEntity, (otp) => otp.user)
