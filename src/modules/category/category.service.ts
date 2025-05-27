@@ -136,7 +136,11 @@ export class CategoryService {
     };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: string) {
+    await this.findOneById(id);
+    await this.categoryRepository.delete({ id });
+    return {
+      message: "deleted successfully.",
+    };
   }
 }
