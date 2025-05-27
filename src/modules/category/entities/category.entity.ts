@@ -1,5 +1,6 @@
 import { BaseEntity } from "src/common/abstracts/base.entity";
 import { EntityNames } from "src/common/enum/entity.enum";
+import { SupplierEntity } from "src/modules/supplier/entities/supplier.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
 
 @Entity(EntityNames.Category)
@@ -21,6 +22,11 @@ export class CategoryEntity extends BaseEntity {
 
   @Column({ nullable: true })
   parentId: string;
+
+  @ManyToOne(() => SupplierEntity, (supplier) => supplier.category, {
+    onDelete: "SET NULL",
+  })
+  suppliers: SupplierEntity[];
 
   @ManyToOne(() => CategoryEntity, (category) => category.children, {
     onDelete: "CASCADE",
