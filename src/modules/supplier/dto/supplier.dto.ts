@@ -1,5 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsMobilePhone, MaxLength } from "class-validator";
+import {
+  IsEmail,
+  IsIdentityCard,
+  IsMobilePhone,
+  MaxLength,
+} from "class-validator";
 
 export class SupplierSignUpDto {
   @ApiProperty()
@@ -26,4 +31,14 @@ export class SupplierSignUpDto {
 
   @ApiProperty()
   invite_code: string;
+}
+
+export class SupplementaryInformationDto {
+  @ApiProperty()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty()
+  @IsIdentityCard("IR")
+  national_code: string;
 }

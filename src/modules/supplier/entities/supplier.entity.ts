@@ -10,6 +10,7 @@ import {
   OneToOne,
 } from "typeorm";
 import { SupplierOtpEntity } from "./supplier-otp.entity";
+import { SupplierStatus } from "../enum/status.enum";
 
 @Entity(EntityNames.Supplier)
 export class SupplierEntity extends BaseEntity {
@@ -24,6 +25,15 @@ export class SupplierEntity extends BaseEntity {
 
   @Column()
   store_name: string;
+
+  @Column({ nullable: true })
+  email: string;
+
+  @Column({ nullable: true })
+  national_code: string;
+
+  @Column({ nullable: true, default: SupplierStatus.Registred })
+  status: string;
 
   @Column({ nullable: true })
   categoryId: string;

@@ -1,21 +1,29 @@
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
+  Scope,
   UnauthorizedException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { SupplierEntity } from "./entities/supplier.entity";
 import { Repository } from "typeorm";
-import { SupplierSignUpDto } from "./dto/supplier.dto";
+import {
+  SupplementaryInformationDto,
+  SupplierSignUpDto,
+} from "./dto/supplier.dto";
 import { CategoryService } from "../category/category.service";
 import { randomInt } from "crypto";
 import { SupplierOtpEntity } from "./entities/supplier-otp.entity";
 import { CheckOtpDto } from "../auth/dto/otp.dto";
 import { TokensPayload } from "../auth/types/payload";
 import { JwtService } from "@nestjs/jwt";
+import { REQUEST } from "@nestjs/core";
+import { Request } from "express";
+import { SupplierStatus } from "./enum/status.enum";
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class SupplierService {
   constructor(
     @InjectRepository(SupplierEntity)
@@ -24,6 +32,7 @@ export class SupplierService {
     private supplierOtpRepository: Repository<SupplierOtpEntity>,
     private categoryService: CategoryService,
     private jwtService: JwtService,
+    @Inject(REQUEST) private request: Request,
   ) {}
 
   async signUp(signUpDto: SupplierSignUpDto) {
@@ -137,5 +146,49 @@ export class SupplierService {
       refreshToken,
       message: "you logged-in successfully.",
     };
+  }
+
+  async validateAccessToken(token: string) {
+    try {
+      const payload = this.jwtService.verify<TokensPayload>(token, {
+        secret: process.env.ACCESS_TOKEN_SECRET,
+      });
+      if (typeof payload === "object" && payload?.id) {
+        const supplier = await this.supplierRepository.findOneBy({
+          id: payload.id,
+        });
+        if (!supplier) {
+          throw new UnauthorizedException("login on your account.");
+        }
+        return supplier;
+      }
+      throw new UnauthorizedException("login on your account.");
+    } catch (error) {
+      throw new UnauthorizedException("login on your account.");
+    }
+  }
+
+  async saveSupplementaryInformation(infoDto: SupplementaryInformationDto) {
+    const { id } = this.request.user;
+    const { email, national_code } = infoDto;
+    let supplier = await this.supplierRepository.findOneBy({ national_code });
+
+    if (supplier && supplier.id !== id) {
+      throw new ConflictException("national code already used.");
+    }
+
+    supplier = await this.supplierRepository.findOneBy({ email });
+    if (supplier && supplier.id !== id) {
+      throw new ConflictException("email already used.");
+    }
+
+    await this.supplierRepository.update(
+      { id },
+      {
+        email,
+        national_code,
+        status: SupplierStatus.SupplementaryInformation,
+      },
+    );
   }
 }
