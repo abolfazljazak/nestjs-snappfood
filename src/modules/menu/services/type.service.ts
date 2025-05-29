@@ -6,7 +6,7 @@ import { Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
 
 @Injectable({ scope: Scope.REQUEST })
-export class TypeService {
+export class MenuTypeService {
   constructor(
     @InjectRepository(TypeEntity)
     private typeRepository: Repository<TypeEntity>,
