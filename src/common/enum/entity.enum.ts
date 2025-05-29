@@ -5,4 +5,5 @@ export enum EntityNames {
   Supplier = "supplier",
   UserOtp = "user_otp",
   SupplierOtp = "supplier_otp",
+  SupplierDocs = "supplier_docs",
 }

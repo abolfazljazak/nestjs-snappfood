@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 import { SupplierOtpEntity } from "./supplier-otp.entity";
 import { SupplierStatus } from "../enum/status.enum";
+import { SupplierDocsEntity } from "./supplier-docs.entity";
 
 @Entity(EntityNames.Supplier)
 export class SupplierEntity extends BaseEntity {
@@ -65,4 +66,7 @@ export class SupplierEntity extends BaseEntity {
   @OneToOne(() => SupplierOtpEntity, (otp) => otp.supplier)
   @JoinColumn()
   otp: SupplierOtpEntity;
+
+  @OneToMany(() => SupplierDocsEntity, (documents) => documents.supplier)
+  documents: SupplierDocsEntity[];
 }
