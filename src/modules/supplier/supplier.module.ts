@@ -6,6 +6,7 @@ import { SupplierEntity } from "./entities/supplier.entity";
 import { SupplierOtpEntity } from "./entities/supplier-otp.entity";
 import { CategoryModule } from "../category/category.module";
 import { JwtService } from "@nestjs/jwt";
+import { CategoryService } from "../category/category.service";
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { JwtService } from "@nestjs/jwt";
     TypeOrmModule.forFeature([SupplierEntity, SupplierOtpEntity]),
   ],
   controllers: [SupplierController],
-  providers: [SupplierService, JwtService],
+  providers: [SupplierService, JwtService, CategoryService],
 })
 export class SupplierModule {}
