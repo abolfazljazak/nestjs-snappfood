@@ -12,6 +12,8 @@ import {
 import { SupplierOtpEntity } from "./supplier-otp.entity";
 import { SupplierStatus } from "../enum/status.enum";
 import { SupplierDocsEntity } from "./supplier-docs.entity";
+import { TypeEntity } from "src/modules/menu/entities/type.entity";
+import { MenuEntity } from "src/modules/menu/entities/menu.entity";
 
 @Entity(EntityNames.Supplier)
 export class SupplierEntity extends BaseEntity {
@@ -69,4 +71,10 @@ export class SupplierEntity extends BaseEntity {
 
   @OneToMany(() => SupplierDocsEntity, (documents) => documents.supplier)
   documents: SupplierDocsEntity[];
+
+  @OneToMany(() => MenuEntity, (food) => food.supplier)
+  food: MenuEntity[];
+
+  @OneToMany(() => TypeEntity, (type) => type.supplier)
+  menuTypes: TypeEntity[];
 }

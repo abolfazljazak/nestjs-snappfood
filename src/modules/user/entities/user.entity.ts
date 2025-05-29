@@ -11,6 +11,7 @@ import {
 import { UserAddressEntity } from "./address.entity";
 import { BaseEntity } from "src/common/abstracts/base.entity";
 import { OtpEntity } from "./otp.entity";
+import { FeedbackEntity } from "src/modules/menu/entities/feedback.entity";
 
 @Entity(EntityNames.User)
 export class UserEntity extends BaseEntity {
@@ -47,6 +48,9 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => UserAddressEntity, (address) => address.user)
   addressList: UserAddressEntity[];
+
+  @OneToMany(() => FeedbackEntity, (feedbacks) => feedbacks.user)
+  feedbacks: FeedbackEntity[];
 
   @CreateDateColumn({ type: "time with time zone" })
   created_at: Date;

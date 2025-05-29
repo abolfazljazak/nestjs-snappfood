@@ -1,0 +1,33 @@
+import { BaseEntity } from "src/common/abstracts/base.entity";
+import { EntityNames } from "src/common/enum/entity.enum";
+import { UserEntity } from "src/modules/user/entities/user.entity";
+import { Column, CreateDateColumn, Entity, ManyToOne } from "typeorm";
+import { MenuEntity } from "./menu.entity";
+
+@Entity(EntityNames.Feedbacks)
+export class FeedbackEntity extends BaseEntity {
+  @Column()
+  foodId: string;
+
+  @Column()
+  userId: string;
+
+  @Column()
+  score: number;
+
+  @Column()
+  comment: string;
+
+  @ManyToOne(() => UserEntity, (user) => user.feedbacks, {
+    onDelete: "CASCADE",
+  })
+  user: UserEntity;
+
+  @ManyToOne(() => MenuEntity, (food) => food.feedbacks, {
+    onDelete: "CASCADE",
+  })
+  food: MenuEntity;
+
+  @CreateDateColumn()
+  created_at: Date;
+}
