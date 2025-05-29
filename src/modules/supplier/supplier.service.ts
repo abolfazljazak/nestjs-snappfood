@@ -22,6 +22,9 @@ import { JwtService } from "@nestjs/jwt";
 import { REQUEST } from "@nestjs/core";
 import { Request } from "express";
 import { SupplierStatus } from "./enum/status.enum";
+import { TDocuments } from "./types/document.type";
+import { S3Service } from "../s3/s3.service";
+import { SupplierDocsEntity } from "./entities/supplier-docs.entity";
 
 @Injectable({ scope: Scope.REQUEST })
 export class SupplierService {
@@ -30,8 +33,11 @@ export class SupplierService {
     private supplierRepository: Repository<SupplierEntity>,
     @InjectRepository(SupplierOtpEntity)
     private supplierOtpRepository: Repository<SupplierOtpEntity>,
+    @InjectRepository(SupplierDocsEntity)
+    private supplierDocsRepository: Repository<SupplierDocsEntity>,
     private categoryService: CategoryService,
     private jwtService: JwtService,
+    private s3Service: S3Service,
     @Inject(REQUEST) private request: Request,
   ) {}
 
@@ -190,5 +196,22 @@ export class SupplierService {
         status: SupplierStatus.SupplementaryInformation,
       },
     );
+  }
+
+  async uploadDocuments(files: TDocuments) {
+    const {id } = this.request.user;
+    const {image, acceptedDoc} = files
+    const imageResult = await this.s3Service.uploadFile(image[0], "images")
+    const acceptedResult = await this.s3Service.uploadFile(acceptedDoc[0], "accepted-doc")
+
+    const supplier = await this.supplierRepository.findOneBy({id})
+    await this.supplierDocsRepository.insert({
+      image: imageResult.Location,
+      document: acceptedResult.Location,
+      supplierId: supplier?.id,
+    })
+    return {
+      message: "upload files successfully."
+    }
   }
 }
