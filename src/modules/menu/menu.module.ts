@@ -5,6 +5,6 @@ import { TypeService } from './services/type.service';
 
 @Module({
   controllers: [MenuController],
-  providers: [MenuService],
+  providers: [MenuService, TypeService],
 })
 export class MenuModule {}
